@@ -1,19 +1,18 @@
 import React from 'react'
 import { Data } from '../Data'
 import { nanoid } from 'nanoid'
+import { reducer, initialState } from '../Reducer'
+import { useReducer } from 'react'
 
 const Books = () => {
     const [userBookName, setUserBookName] = React.useState('')
     const [bookdata, setBookdata] = React.useState(Data)
-    const [isBookAdded, setisBookAdded] = React.useState(false)
-    const [isBookDeleted, setIsBookDeleted] = React.useState(false)
-    const [modalMessage, SetModalMessage] = React.useState('')
 
+    const [state, dispatch] = useReducer(reducer, initialState)
 
     function handleSubmit(e) {
         e.preventDefault()
-        alert(userBookName)
-        setisBookAdded(true)
+        dispatch({ type: 'BookAdded' })
         setBookdata(prevBook => {
             return [
                 ...prevBook,
@@ -28,6 +27,8 @@ const Books = () => {
         setUserBookName('')
     }
     function handleDelete(id) {
+        dispatch({ type: 'BookDeleted' })
+
         const booksAfterDeletion = bookdata.filter(book => book.id !== id)
         setBookdata(booksAfterDeletion)
     }
@@ -38,7 +39,7 @@ const Books = () => {
                 <input type="text" placeholder="Enter your book name" onChange={(e) => setUserBookName(e.target.value)} />
                 <button type="submit">Add Your Book</button>
             </form>
-
+            <h1>{state.modalMessage}</h1>
             {
                 bookdata.map(book => {
                     return <div key={nanoid()}>

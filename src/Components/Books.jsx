@@ -5,12 +5,15 @@ import { nanoid } from 'nanoid'
 const Books = () => {
     const [userBookName, setUserBookName] = React.useState('')
     const [bookdata, setBookdata] = React.useState(Data)
+    const [isBookAdded, setisBookAdded] = React.useState(false)
+    const [isBookDeleted, setIsBookDeleted] = React.useState(false)
+    const [modalMessage, SetModalMessage] = React.useState('')
 
 
     function handleSubmit(e) {
         e.preventDefault()
         alert(userBookName)
-
+        setisBookAdded(true)
         setBookdata(prevBook => {
             return [
                 ...prevBook,
@@ -19,14 +22,15 @@ const Books = () => {
                     bookName: userBookName,
                     authorName: 'Unknown',
                 }
-
             ]
-
-
         })
         console.log(bookdata)
+        setUserBookName('')
     }
-
+    function handleDelete(id) {
+        const booksAfterDeletion = bookdata.filter(book => book.id !== id)
+        setBookdata(booksAfterDeletion)
+    }
 
     return (
         <>
@@ -37,14 +41,14 @@ const Books = () => {
 
             {
                 bookdata.map(book => {
-                    return <div>
+                    return <div key={nanoid()}>
                         <ul>
                             <li>
                                 <>
                                     <h2>{book.bookName}</h2>
                                     <p>{book.authorName}</p>
                                 </>
-                                <button className="dlt-btn">Delete</button>
+                                <button className="dlt-btn" onClick={() => handleDelete(book.id)}>Delete</button>
                             </li>
                         </ul>
                     </div >

@@ -40,7 +40,7 @@ const Books = () => {
                 <button type="submit">Add Your Book</button>
             </form>
             <h1>{state.modalMessage}</h1>
-            {
+            <div className='bookshelf'>{
                 bookdata.map(book => {
                     return <div key={nanoid()}>
                         <ul>
@@ -54,7 +54,7 @@ const Books = () => {
                         </ul>
                     </div >
                 })
-            }
+            }</div>
         </>
     )
 
